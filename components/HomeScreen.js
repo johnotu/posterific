@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableOpacity, View, Image, Text, StyleSheet, Dimensions } from 'react-native';
+import { LoginButton } from 'react-native-fbsdk';
 import storage from '../Model/PosterificStorage';
 
 //set the default dimension
@@ -17,8 +18,24 @@ export default class HomeScreen extends React.Component {
         source={require('./../assets/images/login-splash-bg.jpg')}
         style={styles.splashContainer}
       >
-        <Text style={styles.mainTitle}>Posterific!</Text>
-        <Text style={styles.subTitle}>Poster making made easy.</Text>
+        {/* <Text style={styles.mainTitle}>Posterifi!</Text>
+        <Text style={styles.subTitle}>Poster making made easy.</Text> */}
+        <LoginButton 
+          onLoginFinished={(error, result) => {
+            if (error) {
+              alert("Sorry pal, Login failed with error: " + error.toString());
+            } else if (result.isCancelled) {
+              alert("Why did you cancel Login? Duh!");
+            } else {
+              this.props.navigator.push({
+                name: 'PosterList'
+              });
+            }
+          }}
+          onLogoutFinished={() => {
+            this.props.navigator.popToTop();
+          }}
+        />
         <TouchableOpacity
           onPress={() => { this.props.navigator.push({name: 'PosterList'}) }}
         >
